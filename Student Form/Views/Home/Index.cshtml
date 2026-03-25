@@ -1,196 +1,187 @@
 ﻿@{
     ViewData["Title"] = "Patient Form";
-    string[] TableHeaders = new string[] { "Id", "Name", "Age", "Gender", "Disease", "Action" };
+    string[] TableHeaders = new string[] { "Id", "Name", "Age", "Email", "Phone", "Gender", "Disease", "Action" };
 }
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>@ViewData["Title"]</title>
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 
     <style>
-        .container {
-            max-width: 700px;
-            margin-top: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        table tr {
-            cursor: pointer;
-        }
+        .container { max-width: 800px; margin-top: 30px; }
+        .form-group { margin-bottom: 15px; }
+        table tr { cursor: pointer; }
     </style>
 </head>
 
 <body>
 
-    <!-- FORM -->
-    <div class="container">
-        <h2 class="text-center mb-4">Patient Form</h2>
+<div class="container">
+    <h2 class="text-center mb-4">Patient Form</h2>
 
-        <div class="form-group">
-            <label><b>Patient Name</b></label>
-            <input type="text" id="name" class="form-control">
-        </div>
-
-        <div class="form-group">
-            <label><b>Patient Age</b></label>
-            <input type="number" id="age" class="form-control">
-        </div>
-
-        <div class="form-group">
-            <label><b>Gender</b></label><br />
-            <input type="radio" name="gender" value="Male"> Male
-            <input type="radio" name="gender" value="Female"> Female
-            <input type="radio" name="gender" value="Other"> Other
-        </div>
-
-        <div class="form-group">
-            <label><b>Disease</b></label>
-            <input type="text" id="disease" class="form-control">
-        </div>
-
-        <div class="form-group">
-            <button class="btn btn-success" onclick="addData()">Submit</button>
-            <button class="btn btn-warning" onclick="updateData()">Update</button>
-        </div>
+    <div class="form-group">
+        <label>Name</label>
+        <input type="text" id="name" class="form-control">
     </div>
 
-    <!-- TABLE -->
-    <div class="container mt-4 table-responsive">
-        <table class="table table-bordered">
-            <thead class="table-dark">
-                <tr>
-                    @foreach (var head in TableHeaders)
-                    {
-                        <th>@head</th>
-                    }
-                </tr>
-            </thead>
-            <tbody id="patientTableBody"></tbody>
-        </table>
+    <div class="form-group">
+        <label>Age</label>
+        <input type="number" id="age" class="form-control">
     </div>
 
-    <!-- SCRIPT -->
-    <script>
-        let patients = [];
-        let idCounter = 1;
-        let selectedIndex = null;
+    <div class="form-group">
+        <label>Email</label>
+        <input type="text" id="email" class="form-control">
+    </div>
 
-        function getGender() {
-            let genders = document.getElementsByName("gender");
-            for (let g of genders) {
-                if (g.checked) return g.value;
+    <div class="form-group">
+        <label>Phone</label>
+        <input type="text" id="phone" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label>Gender</label><br />
+        <input type="radio" name="gender" value="Male"> Male
+        <input type="radio" name="gender" value="Female"> Female
+        <input type="radio" name="gender" value="Other"> Other
+    </div>
+
+    <div class="form-group">
+        <label>Disease</label>
+        <input type="text" id="disease" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <button class="btn btn-success" onclick="addData()">Submit</button>
+        <button class="btn btn-warning" onclick="updateData()">Update</button>
+    </div>
+</div>
+
+<!-- TABLE -->
+<div class="container mt-4 table-responsive">
+    <table class="table table-bordered">
+        <thead class="table-dark">
+        <tr>
+            @foreach (var head in TableHeaders)
+            {
+                <th>@head</th>
             }
-            return "";
+        </tr>
+        </thead>
+        <tbody id="patientTableBody"></tbody>
+    </table>
+</div>
+
+<script>
+    let patients = [];
+    let idCounter = 1;
+    let selectedIndex = null;
+
+    function getGender() {
+        let genders = document.getElementsByName("gender");
+        for (let g of genders) {
+            if (g.checked) return g.value;
+        }
+        return "";
+    }
+
+    function setGender(value) {
+        let genders = document.getElementsByName("gender");
+        for (let g of genders) {
+            g.checked = (g.value === value);
+        }
+    }
+
+    function addData() {
+        let name = document.getElementById("name").value.trim();
+        let age = document.getElementById("age").value.trim();
+        let email = document.getElementById("email").value.trim();
+        let phone = document.getElementById("phone").value.trim();
+        let gender = getGender();
+        let disease = document.getElementById("disease").value.trim();
+
+        if (!name || !age || !email || !phone || !gender || !disease) {
+            alert("Please fill all fields");
+            return;
         }
 
-        function setGender(value) {
-            let genders = document.getElementsByName("gender");
-            for (let g of genders) {
-                g.checked = (g.value === value);
-            }
-        }
-
-        function clearGender() {
-            let genders = document.getElementsByName("gender");
-            for (let g of genders) {
-                g.checked = false;
-            }
-        }
-
-        function addData() {
-            let name = document.getElementById("name").value.trim();
-            let age = document.getElementById("age").value.trim();
-            let gender = getGender();
-            let disease = document.getElementById("disease").value.trim();
-
-            if (name === "" || age === "" || gender === "" || disease === "") {
-                alert("Please fill all fields");
-                return;
-            }
-
-            if (selectedIndex !== null) {
-                patients[selectedIndex].name = name;
-                patients[selectedIndex].age = age;
-                patients[selectedIndex].gender = gender;
-                patients[selectedIndex].disease = disease;
-                selectedIndex = null;
-            } else {
-                let patient = {
-                    id: idCounter++,
-                    name,
-                    age,
-                    gender,
-                    disease
-                };
-                patients.push(patient);
-            }
-
-            displayData();
-            clearForm();
-        }
-
-        function displayData() {
-            let tableBody = document.getElementById("patientTableBody");
-            tableBody.innerHTML = "";
-
-            patients.forEach((p, index) => {
-                tableBody.innerHTML += `
-                    <tr onclick="editRow(${index})">
-                        <td>${p.id}</td>
-                        <td>${p.name}</td>
-                        <td>${p.age}</td>
-                        <td>${p.gender}</td>
-                        <td>${p.disease}</td>
-                        <td>
-                            <button class="btn btn-danger btn-sm" onclick="deleteData(event, ${index})">Delete</button>
-                        </td>
-                    </tr>
-                `;
+        if (selectedIndex !== null) {
+            patients[selectedIndex] = {
+                id: patients[selectedIndex].id,
+                name, age, email, phone, gender, disease
+            };
+            selectedIndex = null;
+        } else {
+            patients.push({
+                id: idCounter++,
+                name, age, email, phone, gender, disease
             });
         }
 
-        function editRow(index) {
-            selectedIndex = index;
-            let p = patients[index];
+        displayData();
+        clearForm();
+    }
 
-            document.getElementById("name").value = p.name;
-            document.getElementById("age").value = p.age;
-            document.getElementById("disease").value = p.disease;
-            setGender(p.gender);
+    function displayData() {
+        let tableBody = document.getElementById("patientTableBody");
+        tableBody.innerHTML = "";
+
+        patients.forEach((p, index) => {
+            tableBody.innerHTML += `
+                <tr onclick="editRow(${index})">
+                    <td>${p.id}</td>
+                    <td>${p.name}</td>
+                    <td>${p.age}</td>
+                    <td>${p.email}</td>
+                    <td>${p.phone}</td>
+                    <td>${p.gender}</td>
+                    <td>${p.disease}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onclick="deleteData(event, ${index})">Delete</button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    function editRow(index) {
+        selectedIndex = index;
+        let p = patients[index];
+
+        document.getElementById("name").value = p.name;
+        document.getElementById("age").value = p.age;
+        document.getElementById("email").value = p.email;
+        document.getElementById("phone").value = p.phone;
+        document.getElementById("disease").value = p.disease;
+        setGender(p.gender);
+    }
+
+    function updateData() {
+        if (selectedIndex !== null) {
+            addData();
+        } else {
+            alert("Select a row first");
         }
+    }
 
-        function updateData() {
-            if (selectedIndex !== null) {
-                addData();
-            } else {
-                alert("Please select a row first");
-            }
-        }
+    function deleteData(event, index) {
+        event.stopPropagation();
+        patients.splice(index, 1);
+        displayData();
+        clearForm();
+    }
 
-        function deleteData(event, index) {
-            event.stopPropagation(); // prevent row click
-
-            if (confirm("Are you sure you want to delete?")) {
-                patients.splice(index, 1);
-                displayData();
-                clearForm();
-                selectedIndex = null;
-            }
-        }
-
-        function clearForm() {
-            document.getElementById("name").value = "";
-            document.getElementById("age").value = "";
-            document.getElementById("disease").value = "";
-            clearGender();
-        }
-    </script>
+    function clearForm() {
+        document.getElementById("name").value = "";
+        document.getElementById("age").value = "";
+        document.getElementById("email").value = "";
+        document.getElementById("phone").value = "";
+        document.getElementById("disease").value = "";
+        document.querySelectorAll('input[name="gender"]').forEach(g => g.checked = false);
+    }
+</script>
 
 </body>
 </html>

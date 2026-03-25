@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Patient_Form.Models;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Patient_Form.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+
+        // simple in-memory "database" for bookings
+        private static List<CheckupModel> bookings = new List<CheckupModel>();
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -23,10 +23,27 @@ namespace Patient_Form.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Privacy()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
+        }
+
+        public IActionResult OnlineCheckup()
+        {
+            ViewBag.Appointments = bookings;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult OnlineCheckup(CheckupModel model)
+        {
+            if (ModelState.IsValid) {
+                bookings.Add(model);
+                return RedirectToAction("OnlineCheckup");
+            }
+
+            ViewBag.Appointments = bookings;
+            return View(model);
         }
     }
 }
