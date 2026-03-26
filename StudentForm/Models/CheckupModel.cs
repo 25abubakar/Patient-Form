@@ -1,6 +1,6 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Patient_Form.Models
 {
@@ -18,8 +18,7 @@ namespace Patient_Form.Models
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Phone is required")]
-        [RegularExpression(@"^03\d{9}$",
-            ErrorMessage = "Phone must be Pakistani format (03XXXXXXXXX)")]
+        [RegularExpression(@"^03\d{9}$", ErrorMessage = "Phone must be Pakistani format (03XXXXXXXXX)")]
         public string Phone { get; set; }
 
         [Required(ErrorMessage = "City is required")]
@@ -31,7 +30,7 @@ namespace Patient_Form.Models
         [Required(ErrorMessage = "Appointment date required")]
         [DataType(DataType.Date)]
         [FutureDate(ErrorMessage = "Date must be today or future")]
-        public DateTime AppointmentDate { get; set; }
+        public DateTime? AppointmentDate { get; set; }  // Nullable
 
         [Required(ErrorMessage = "Please select time slot")]
         public string SlotTime { get; set; }
@@ -45,8 +44,12 @@ namespace Patient_Form.Models
         public override bool IsValid(object value)
         {
             if (value == null) return false;
-            DateTime date = (DateTime)value;
-            return date.Date >= DateTime.Today;
+
+            if (value is DateTime date) {
+                return date.Date >= DateTime.Today;
+            }
+
+            return false;
         }
     }
 }

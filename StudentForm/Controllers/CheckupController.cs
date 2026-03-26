@@ -3,47 +3,50 @@ using Patient_Form.Data;
 using Patient_Form.Models;
 using System.Linq;
 
-public class CheckupController : Controller
+namespace Patient_Form.Controllers
 {
-    private readonly AppDbContext _context;
-
-    public CheckupController(AppDbContext context)
+    public class CheckupController : Controller
     {
-        _context = context;
-    }
+        private readonly ApplicationDbContext _context;
 
-    public IActionResult OnlineCheckup()
-    {
-        ViewBag.Appointments = _context.Appointments.ToList();
-        return View();
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult OnlineCheckup(CheckupModel model)
-    {
-        if (!ModelState.IsValid) {
-            ViewBag.Appointments = _context.Appointments.ToList();
-            return View(model);
+        public CheckupController(ApplicationDbContext context)
+        {
+            _context = context;
         }
 
-        bool slotTaken = _context.Appointments.Any(x =>
-            x.AppointmentDate.Date == model.AppointmentDate.Date &&
-            x.SlotTime == model.SlotTime);
-
-        if (slotTaken) {
-            ModelState.AddModelError("SlotTime", "This slot already booked!");
+        public IActionResult OnlineCheckup()
+        {
             ViewBag.Appointments = _context.Appointments.ToList();
-            return View(model);
+            return View();
         }
 
-        _context.Appointments.Add(model);
-        _context.SaveChanges();
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult OnlineCheckup(CheckupModel model)
+        {
+            if (!ModelState.IsValid) {
+                ViewBag.Appointments = _context.Appointments.ToList();
+                return View(model);
+            }
 
-        ViewBag.Success = "Appointment booked successfully!";
-        ModelState.Clear();
-        ViewBag.Appointments = _context.Appointments.ToList();
+            bool slotTaken = _context.Appointments.Any(x =>
+                x.AppointmentDate.Value.Date == model.AppointmentDate.Value.Date &&
+                x.SlotTime == model.SlotTime);
 
-        return View();
+            if (slotTaken) {
+                ModelState.AddModelError("SlotTime", "This slot is already booked!");
+                ViewBag.Appointments = _context.Appointments.ToList();
+                return View(model);
+            }
+
+            _context.Appointments.Add(model);
+            _context.SaveChanges();
+
+            ViewBag.Success = "Appointment booked successfully!";
+            ModelState.Clear();
+            ViewBag.Appointments = _context.Appointments.ToList();
+
+            return View();
+        }
     }
 }
