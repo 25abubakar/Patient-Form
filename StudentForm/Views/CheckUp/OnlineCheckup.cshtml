@@ -27,9 +27,27 @@
 
         <div class="row">
             <div class="col-md-6 mb-3">
-                <label>Name</label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label>First Name</label>
+                <input asp-for="FName" class="form-control" />
+                <span asp-validation-for="FName" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Last Name</label>
+                <input asp-for="LstName" class="form-control" />
+                <span asp-validation-for="LstName" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Age</label>
+                <input asp-for="Age" type="number" class="form-control" />
+                <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Date of Birth</label>
+                <input asp-for="DOB" type="date" class="form-control" />
+                <span asp-validation-for="DOB" class="text-danger"></span>
             </div>
 
             <div class="col-md-6 mb-3">
@@ -97,7 +115,13 @@
 
     <table class="table table-bordered">
         <tr class="table-dark">
-            <th>Name</th>
+            <th>FName</th>
+            <th>LstName</th>
+            <th>Age</th>
+            <th>DOB</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>City</th>
             <th>Date</th>
             <th>Slot</th>
             <th>Disease</th>
@@ -106,7 +130,13 @@
         @foreach (var item in ViewBag.Appointments)
         {
             <tr>
-                <td>@item.Name</td>
+                <td>@item.FName</td>
+                <td>@item.LstName</td>
+                <td>@item.Age</td>
+                <td>@item.DOB</td>
+                <td>@item.Email</td>
+                <td>@item.Phone</td>
+                <td>@item.City</td>
                 <td>@item.AppointmentDate.ToShortDateString()</td>
                 <td>@item.SlotTime</td>
                 <td>@item.Disease</td>

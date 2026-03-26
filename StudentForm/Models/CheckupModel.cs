@@ -9,9 +9,20 @@ namespace Patient_Form.Models
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Name is required")]
+        [Required(ErrorMessage = "First Name is required")]
         [StringLength(50)]
-        public string Name { get; set; }
+        public string FName { get; set; }
+
+        [Required(ErrorMessage = "Last Name is required")]
+        [StringLength(50)]
+        public string LstName { get; set; }
+
+        [Required(ErrorMessage = "Age is required")]
+        public int Age { get; set; }
+
+        [Required(ErrorMessage = "Date Of Birth required")]
+        [DataType(DataType.Date)]
+        public DateTime? DOB{ get; set; }  // Nullable
 
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Enter valid email")]
