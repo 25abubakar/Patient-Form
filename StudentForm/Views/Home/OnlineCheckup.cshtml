@@ -1,0 +1,117 @@
+﻿@model Patient_Form.Models.CheckupModel
+@{
+    ViewData["Title"] = "Online Check Up";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center">Online Doctor Appointment</h2>
+
+    @if (TempData["Success"] != null)
+{
+    <div class="alert alert-success text-center">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger text-center">
+        @TempData["Error"]
+    </div>
+}
+
+    <form asp-action="OnlineCheckup" method="post">
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Name</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Email</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Phone</label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>City</label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Disease / Problem</label>
+                <input asp-for="Disease" class="form-control" />
+                <span asp-validation-for="Disease" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Appointment Date</label>
+                <input asp-for="AppointmentDate" class="form-control" />
+                <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Select Time Slot</label>
+                <select asp-for="SlotTime" class="form-control">
+                    <option value="">-- Select Slot --</option>
+                    <option>10:00 AM</option>
+                    <option>11:00 AM</option>
+                    <option>12:00 PM</option>
+                    <option>01:00 PM</option>
+                    <option>02:00 PM</option>
+                    <option>03:00 PM</option>
+                    <option>04:00 PM</option>
+                    <option>05:00 PM</option>
+                </select>
+                <input asp-for="SlotTime" class="form-control" />
+                <span asp-validation-for="SlotTime" class="text-danger"></span>
+            </div>
+
+            <div class="col-12 mb-3">
+                <label>Message</label>
+                <textarea asp-for="Message" class="form-control"></textarea>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">
+            Book Appointment
+        </button>
+
+    </form>
+
+    <hr />
+
+    <h4>Booked Appointments</h4>
+
+    <table class="table table-bordered">
+        <tr class="table-dark">
+            <th>Name</th>
+            <th>Date</th>
+            <th>Slot</th>
+            <th>Disease</th>
+        </tr>
+
+        @foreach (var item in ViewBag.Appointments)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.AppointmentDate.ToShortDateString()</td>
+                <td>@item.SlotTime</td>
+                <td>@item.Disease</td>
+            </tr>
+        }
+    </table>
+
+</div>
