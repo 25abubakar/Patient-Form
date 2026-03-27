@@ -21,16 +21,9 @@ namespace Patient_Form.Controllers
             return View();
         }
 
-        [HttpGet]
-        public IActionResult CheckupModel()
-        {
-            //ViewBag.Appointments = _context.Set<CheckupModel>().ToList();
-            return View();
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CheckupModel(CheckupModel model)
+        public IActionResult OnlineCheckup(CheckupModel model)
         {
             if (!ModelState.IsValid) {
                 //ViewBag.Appointments = _context.Set<CheckupModel>().ToList();
