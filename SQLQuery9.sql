@@ -1,0 +1,8 @@
+SELECT TOP (1000) [Id]
+      ,[FName]
+      ,[LstName]
+      ,[Age]
+      ,[Phone]
+      ,[Email]
+      ,[DOB]
+  FROM [PatientDB].[dbo].[Appointments]

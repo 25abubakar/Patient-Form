@@ -20,6 +20,9 @@ namespace Patient_Form.Models
         [Required(ErrorMessage = "Age is required")]
         public int Age { get; set; }
 
+        [Required(ErrorMessage = "Please select Gender")]
+        public string Gender { get; set; }
+
         [Required(ErrorMessage = "Date Of Birth required")]
         [DataType(DataType.Date)]
         public DateTime? DOB{ get; set; }  // Nullable
@@ -34,6 +37,12 @@ namespace Patient_Form.Models
 
         [Required(ErrorMessage = "City is required")]
         public string City { get; set; }
+
+        [Required(ErrorMessage = "Please select Patient Type")]
+        public string PatientType { get; set; }
+
+        [Required(ErrorMessage = "Please select Visit Type")]
+        public string VisitType { get; set; }
 
         [Required(ErrorMessage = "Disease is required")]
         public string Disease { get; set; }

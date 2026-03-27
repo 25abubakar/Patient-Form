@@ -7,23 +7,23 @@
     <h2 class="text-center">Online Doctor Appointment</h2>
 
     @if (TempData["Success"] != null)
-{
-    <div class="alert alert-success text-center">
-        @TempData["Success"]
-    </div>
-}
+    {
+        <div class="alert alert-success text-center">
+            @TempData["Success"]
+        </div>
+    }
 
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger text-center">
-        @TempData["Error"]
-    </div>
-}
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center">
+            @TempData["Error"]
+        </div>
+    }
 
     <form asp-action="OnlineCheckup" method="post">
-    @Html.AntiForgeryToken()
+        @Html.AntiForgeryToken()
 
-    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
         <div class="row">
             <div class="col-md-6 mb-3">
@@ -42,6 +42,14 @@
                 <label>Age</label>
                 <input asp-for="Age" type="number" class="form-control" />
                 <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Gender</label><br />
+                <input type="radio" asp-for="Gender" name="Gender" value="Male" /> Male
+                <input type="radio" asp-for="Gender" name="Gender" value="Female" /> Female
+                <input type="radio" asp-for="Gender" name="Gender" value="Other" /> Other
+                <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
 
             <div class="col-md-6 mb-3">
@@ -68,6 +76,30 @@
                 <span asp-validation-for="City" class="text-danger"></span>
             </div>
 
+            <!-- Patient Type Dropdown -->
+            <div class="col-md-6 mb-3">
+                <label><b>Patient Type</b></label>
+                <select asp-for="PatientType" class="form-control" required>
+                    <option value="">-- Select Patient Type --</option>
+                    <option value="Inpatient">Inpatient</option>
+                    <option value="Outpatient">Outpatient</option>
+                    <option value="Emergency">Emergency Patient</option>
+                    <option value="LongTermCare">Long-term Care Patient</option>
+                </select>
+                <span asp-validation-for="PatientType" class="text-danger"></span>
+            </div>
+
+            <!-- Visit Type Dropdown -->
+            <div class="col-md-6 mb-3">
+                <label><b>Visit Type</b></label>
+                <select asp-for="VisitType" class="form-control" required>
+                    <option value="">-- Select Visit Type --</option>
+                    <option value="New">New Patient</option>
+                    <option value="FollowUp">Follow-Up</option>
+                </select>
+                <span asp-validation-for="VisitType" class="text-danger"></span>
+            </div>
+
             <div class="col-md-6 mb-3">
                 <label>Disease / Problem</label>
                 <input asp-for="Disease" class="form-control" />
@@ -76,13 +108,14 @@
 
             <div class="col-md-6 mb-3">
                 <label>Appointment Date</label>
-                <input asp-for="AppointmentDate" class="form-control" />
+                <input asp-for="AppointmentDate" type="date" class="form-control" />
                 <span asp-validation-for="AppointmentDate" class="text-danger"></span>
             </div>
 
+            <!-- Slot Dropdown -->
             <div class="col-md-6 mb-3">
                 <label>Select Time Slot</label>
-                <select asp-for="SlotTime" class="form-control">
+                <select asp-for="SlotTime" class="form-control" required>
                     <option value="">-- Select Slot --</option>
                     <option>10:00 AM</option>
                     <option>11:00 AM</option>
@@ -93,7 +126,6 @@
                     <option>04:00 PM</option>
                     <option>05:00 PM</option>
                 </select>
-                <input asp-for="SlotTime" class="form-control" />
                 <span asp-validation-for="SlotTime" class="text-danger"></span>
             </div>
 
@@ -106,25 +138,26 @@
         <button type="submit" class="btn btn-primary w-100">
             Book Appointment
         </button>
-
     </form>
 
     <hr />
 
     <h4>Booked Appointments</h4>
-
     <table class="table table-bordered">
         <tr class="table-dark">
             <th>FName</th>
             <th>LstName</th>
             <th>Age</th>
+            <th>Gender</th>
             <th>DOB</th>
             <th>Email</th>
             <th>Phone</th>
             <th>City</th>
-            <th>Date</th>
-            <th>Slot</th>
+            <th>PatientType</th>
+            <th>VisitType</th>
             <th>Disease</th>
+            <th>Date</th>
+            <th>Slot</th>  
         </tr>
 
         @foreach (var item in ViewBag.Appointments)
@@ -133,15 +166,17 @@
                 <td>@item.FName</td>
                 <td>@item.LstName</td>
                 <td>@item.Age</td>
-                <td>@item.DOB</td>
+                <td>@item.Gender</td>
+                <td>@item.DOB.ToShortDateString()</td>
                 <td>@item.Email</td>
                 <td>@item.Phone</td>
                 <td>@item.City</td>
-                <td>@item.AppointmentDate.ToShortDateString()</td>
-                <td>@item.SlotTime</td>
+                <td>@item.PatientType</td>
+                <td>@item.VisitType</td>
                 <td>@item.Disease</td>
+                <td>@item.AppointmentDate.ToShortDateString()</td>
+                <td>@item.SlotTime</td> 
             </tr>
         }
     </table>
-
 </div>
