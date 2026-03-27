@@ -12,14 +12,13 @@
             @TempData["Success"]
         </div>
     }
-
     @if (TempData["Error"] != null)
     {
         <div class="alert alert-danger text-center">
             @TempData["Error"]
         </div>
     }
-
+</div>
     <form asp-action="OnlineCheckup" method="post">
         @Html.AntiForgeryToken()
 
@@ -142,7 +141,7 @@
 
     <hr />
 
-    <h4>Booked Appointments</h4>
+@*     <h4>Booked Appointments</h4>
     <table class="table table-bordered">
         <tr class="table-dark">
             <th>FName</th>
@@ -160,23 +159,23 @@
             <th>Slot</th>  
         </tr>
 
-        @foreach (var item in ViewBag.Appointments)
+        @foreach (var CheckUpModel in ViewBag.Appointments)
         {
             <tr>
-                <td>@item.FName</td>
-                <td>@item.LstName</td>
-                <td>@item.Age</td>
-                <td>@item.Gender</td>
-                <td>@item.DOB.ToShortDateString()</td>
-                <td>@item.Email</td>
-                <td>@item.Phone</td>
-                <td>@item.City</td>
-                <td>@item.PatientType</td>
-                <td>@item.VisitType</td>
-                <td>@item.Disease</td>
-                <td>@item.AppointmentDate.ToShortDateString()</td>
-                <td>@item.SlotTime</td> 
+                <td>@CheckUpModel.FName</td>
+                <td>@CheckUpModel.LstName</td>
+                <td>@CheckUpModel.Age</td>
+                <td>@CheckUpModel.Gender</td>
+                <td>@CheckUpModel.DOB.ToShortDateString()</td>
+                <td>@CheckUpModel.Email</td>
+                <td>@CheckUpModel.Phone</td>
+                <td>@CheckUpModel.City</td>
+                <td>@CheckUpModel.PatientType</td>
+                <td>@CheckUpModel.VisitType</td>
+                <td>@CheckUpModel.Disease</td>
+                <td>@CheckUpModel.AppointmentDate.ToShortDateString()</td>
+                <td>@CheckUpModel.SlotTime</td>
             </tr>
         }
     </table>
-</div>
+</div> *@

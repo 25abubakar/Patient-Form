@@ -4,9 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Patient_Form.Models
 {
-    [Table("Appointments")]
-    public class CheckupModel
-    {
+        public class CheckupModel
+        {
         public int Id { get; set; }
 
         [Required(ErrorMessage = "First Name is required")]
@@ -25,7 +24,7 @@ namespace Patient_Form.Models
 
         [Required(ErrorMessage = "Date Of Birth required")]
         [DataType(DataType.Date)]
-        public DateTime? DOB{ get; set; }  // Nullable
+        public DateTime? DOB { get; set; }  // Nullable
 
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Enter valid email")]
@@ -50,7 +49,7 @@ namespace Patient_Form.Models
         [Required(ErrorMessage = "Appointment date required")]
         [DataType(DataType.Date)]
         [FutureDate(ErrorMessage = "Date must be today or future")]
-        public DateTime? AppointmentDate { get; set; }  // Nullable
+        public DateTime? AppointmentDate { get; set; }
 
         [Required(ErrorMessage = "Please select time slot")]
         public string SlotTime { get; set; }

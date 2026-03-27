@@ -12,6 +12,6 @@ namespace Patient_Form.Data
         }
 
         // DbSets for your tables
-        public DbSet<CheckupModel> Appointments { get; set; }
+        DbSet<Patient_Form.Models.CheckupModel> Appointments { get; set; }
     }
 }
