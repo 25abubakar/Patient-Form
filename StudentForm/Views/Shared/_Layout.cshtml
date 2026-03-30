@@ -5,36 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Patient_Form</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.6/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
     <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        /* Ensure footer stays at bottom */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex: 1;
+        }
+        footer {
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 10px 0;
+            border-top: 1px solid #dee2e6;
+        }
+    </style>
 </head>
 <body>
-     <header>
+    <header>
         <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow">
-
-    <div class="container">
-
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Patient Form</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-controller="CheckUp" asp-action="OnlineCheckup">Online Apppointment</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Patient Form</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="CheckUp" asp-action="OnlineCheckup">Online Appointment</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
     </header>
-    <div class="container mt-3 mb-3">
-            @RenderBody()
+
+    <main class="container mt-3 mb-3">
+        @RenderBody()
+    </main>
+
+<footer>
+    <div class="mt-2">
+        &copy; @DateTime.Now.Year Patient Form. All rights reserved.
+
+        <a href="mailto:muhammadabubakarkhan1234@gmail.com" target="_blank" class="me-3">
+            <img src="~/images/mail.jpg" alt="Gmail" style="width:24px; height:24px; vertical-align:middle;">
+        </a>
+        <a href="https://github.com/25abubakar/Patient-Form" target="_blank">
+            <img src="~/images/git.webp" alt="GitHub" style="width:24px; height:24px; vertical-align:middle;">
+        </a>
     </div>
+</footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

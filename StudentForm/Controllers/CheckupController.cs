@@ -64,8 +64,9 @@ namespace Patient_Form.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult OnlineCheckup(CheckupModel model)
             {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid) {
                 return View(model);
+            }
 
             using (var conn = _context.Database.GetDbConnection()) {
                 conn.Open();
