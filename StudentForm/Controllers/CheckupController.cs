@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Patient_Form.Data;
 using Patient_Form.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using CheckupModel = Patient_Form.Models.CheckupModel;
 
@@ -20,7 +21,42 @@ namespace Patient_Form.Controllers
 
         public IActionResult OnlineCheckup()
         {
-            //ViewBag.Appointments = _context.Set<CheckupModel>().ToList();
+            var appointments = new List<CheckupModel>();
+
+            using (var conn = _context.Database.GetDbConnection()) {
+                conn.Open();
+                using (var cmd = conn.CreateCommand()) {
+                    cmd.CommandText = @"
+                SELECT p.FName, p.LstName, p.Age, p.Gender, p.DOB, p.Email, p.Phone, p.City,
+                       a.PatientType, a.VisitType, a.Disease, a.AppointmentDate, a.SlotTime, a.Message
+                FROM dbo.Patients p
+                INNER JOIN dbo.Appointments a ON p.Id = a.PatientId
+                ORDER BY a.AppointmentDate DESC";
+
+                    using (var reader = cmd.ExecuteReader()) {
+                        while (reader.Read()) {
+                            appointments.Add(new CheckupModel {
+                                FName = reader["FName"].ToString(),
+                                LstName = reader["LstName"].ToString(),
+                                Age = Convert.ToInt32(reader["Age"]),
+                                Gender = reader["Gender"].ToString(),
+                                DOB = reader["DOB"] as DateTime?,
+                                Email = reader["Email"].ToString(),
+                                Phone = reader["Phone"].ToString(),
+                                City = reader["City"].ToString(),
+                                PatientType = reader["PatientType"].ToString(),
+                                VisitType = reader["VisitType"].ToString(),
+                                Disease = reader["Disease"].ToString(),
+                                AppointmentDate = reader["AppointmentDate"] as DateTime?,
+                                SlotTime = reader["SlotTime"].ToString(),
+                                Message = reader["Message"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+
+            ViewBag.Appointments = appointments;
             return View();
         }
 
