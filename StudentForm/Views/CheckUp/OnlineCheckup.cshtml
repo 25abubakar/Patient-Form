@@ -160,4 +160,23 @@
             <th>Date</th>
             <th>Slot</th>  
         </tr>
+
+          @foreach (var CheckUpModel in ViewBag.Appointments)
+        {
+            <tr>
+                <td>@CheckUpModel.FName</td>
+                <td>@CheckUpModel.LstName</td>
+                <td>@CheckUpModel.Age</td>
+                <td>@CheckUpModel.Gender</td>
+                <td>@CheckUpModel.DOB.ToShortDateString()</td>
+                <td>@CheckUpModel.Email</td>
+                <td>@CheckUpModel.Phone</td>
+                <td>@CheckUpModel.City</td>
+                <td>@CheckUpModel.PatientType</td>
+                <td>@CheckUpModel.VisitType</td>
+                <td>@CheckUpModel.Disease</td>
+                <td>@CheckUpModel.AppointmentDate.ToShortDateString()</td>
+                <td>@CheckUpModel.SlotTime</td>
+            </tr>
+        }
     </table>

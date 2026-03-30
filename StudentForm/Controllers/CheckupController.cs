@@ -71,7 +71,6 @@ namespace Patient_Form.Controllers
                     cmd.ExecuteNonQuery();
                 }
             }
-
             TempData["Success"] = "Appointment booked successfully!";
             return RedirectToAction("OnlineCheckup");
         }
