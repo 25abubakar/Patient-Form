@@ -150,11 +150,18 @@
     </form>
     </div>
 </div>
+        @* <button type="submit" class="btn btn-success">
+             Update Appointment
+        </button>
 
-    <hr />
-<h4>Booked Appointments</h4>
-<div class="card shadow-sm mb-5">
-    <div class="card-body">
+        <a asp-action="OnlineCheckup" class="btn btn-secondary">
+            Back
+        </a>
+           <hr/> *@
+
+        <h4>Booked Appointments</h4>
+        <div class="card shadow-sm mb-5">
+          <div class="card-body">
 <div class="table-responsive">
     <table class="table table-bordered">
         <thead class="table-dark">
@@ -172,6 +179,7 @@
                 <th>Disease</th>
                 <th>Date</th>
                 <th>Slot</th>
+                <th>Update</th>
             </tr>
         </thead>
         <tbody>
@@ -191,10 +199,14 @@
                     <td>@CheckUpModel.Disease</td>
                     <td>@CheckUpModel.AppointmentDate.ToShortDateString()</td>
                     <td>@CheckUpModel.SlotTime</td>
+                    @* <td><a asp-action="Edit"asp-route-patientId="@CheckUpModel.PatientId"
+                        asp-route-appointmentId="@CheckUpModel.AppointmentId"
+                           class="btn btn-warning btn-sm">Update</a>
+                    </td> *@
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
-</div>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
