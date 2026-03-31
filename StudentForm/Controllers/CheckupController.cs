@@ -33,7 +33,7 @@ namespace Patient_Form.Controllers
                 INNER JOIN dbo.Appointments a ON p.Id = a.PatientId
                 ORDER BY a.AppointmentDate DESC";
 
-                    using (var reader = cmd.ExecuteReader()) {
+                    using var reader = cmd.ExecuteReader(); {
                         while (reader.Read()) {
                             appointments.Add(new CheckupModel {
                                 FName = reader["FName"].ToString(),
