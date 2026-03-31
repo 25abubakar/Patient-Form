@@ -1,11 +1,13 @@
-﻿@* @model Patient_Form.Models.CheckupModel
+﻿@model Patient_Form.Models.CheckupModel
+@{
+    ViewData["Title"] = "Edit Appointment";
+}
 
 <div class="container mt-4">
     <h2>Edit Appointment</h2>
 
     <form asp-action="Edit" method="post">
-        <input type="hidden" asp-for="PatientId" />
-        <input type="hidden" asp-for="AppointmentId" />
+        <input type="hidden" asp-for="Id" />
 
         <div class="row">
             <div class="col-md-6">
@@ -30,7 +32,7 @@
         </div>
 
         <br />
-        <button class="btn btn-success">Update</button>
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Update</a>
         <a asp-action="OnlineCheckup" class="btn btn-secondary">Back</a>
     </form>
-</div> *@
+</div>

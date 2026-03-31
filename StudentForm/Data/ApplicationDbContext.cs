@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Patient_Form.Models; // Replace with your namespace
-
+using Patient_Form.Models; 
 namespace Patient_Form.Data
 {
     public class ApplicationDbContext : DbContext
@@ -10,7 +9,6 @@ namespace Patient_Form.Data
             : base(options)
         {
         }
-
         // DbSets for your tables
         DbSet<Patient_Form.Models.CheckupModel> Appointments { get; set; }
     }
