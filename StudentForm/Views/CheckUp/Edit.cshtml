@@ -1,38 +1,121 @@
 ﻿@model Patient_Form.Models.CheckupModel
 @{
-    ViewData["Title"] = "Edit Appointment";
+    ViewData["Title"] = "Update Appointment";
 }
 
 <div class="container mt-4">
     <h2>Edit Appointment</h2>
 
     <form asp-action="Edit" method="post">
-        <input type="hidden" asp-for="Id" />
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="PatientId" />
+        <input type="hidden" asp-for="AppointmentId" />
+
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
         <div class="row">
             <div class="col-md-6">
-                <label>First Name</label>
+                <label asp-for="FName">First Name</label>
                 <input asp-for="FName" class="form-control" />
+                <span asp-validation-for="FName" class="text-danger"></span>
             </div>
 
             <div class="col-md-6">
-                <label>Last Name</label>
+                <label asp-for="LstName">Last Name</label>
                 <input asp-for="LstName" class="form-control" />
+                <span asp-validation-for="LstName" class="text-danger"></span>
             </div>
 
             <div class="col-md-6">
-                <label>Gender</label>
-                <input asp-for="Gender" class="form-control" />
+                <label asp-for="Age">Age</label>
+                <input asp-for="Age" class="form-control" />
+                <span asp-validation-for="Age" class="text-danger"></span>
             </div>
 
             <div class="col-md-6">
-                <label>City</label>
+                <label asp-for="Gender">Gender</label>
+                <select asp-for="Gender" class="form-control">
+                    <option value="">-- Select Gender --</option>
+                    <option value="Male" selected="@Model.Gender == " Male"">Male</option>
+                    <option value="Female" selected="@Model.Gender == " Female"">Female</option>
+                    <option value="Other" selected="@Model.Gender == " Other"">Other</option>
+                </select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="DOB">Date of Birth</label>
+                <input asp-for="DOB" type="date" class="form-control" />
+                <span asp-validation-for="DOB" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Phone">Phone</label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Email">Email</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="City">City</label>
                 <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
             </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="PatientType"><b>Patient Type</b></label>
+                <select asp-for="PatientType" class="form-control" required>
+                    <option value="">-- Select Patient Type --</option>
+                    <option value="Inpatient">Inpatient</option>
+                    <option value="Outpatient">Outpatient</option>
+                    <option value="Emergency">Emergency Patient</option>
+                    <option value="LongTermCare">Long-term Care Patient</option>
+                </select>
+                <span asp-validation-for="PatientType" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="VisitType"><b>Visit Type</b></label>
+                <select asp-for="VisitType" class="form-control" required>
+                    <option value="">-- Select Visit Type --</option>
+                    <option value="New">New Patient</option>
+                    <option value="FollowUp">Follow-Up</option>
+                </select>
+
+            <div class="col-md-6">
+                <label asp-for="Disease">Disease</label>
+                <input asp-for="Disease" class="form-control" />
+                <span asp-validation-for="Disease" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="AppointmentDate">Appointment Date</label>
+                <input asp-for="AppointmentDate" type="date" class="form-control" />
+                <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="SlotTime">Slot Time</label>
+                <input asp-for="SlotTime" class="form-control" />
+                <span asp-validation-for="SlotTime" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-12">
+                <label asp-for="Message">Message</label>
+                <textarea asp-for="Message" class="form-control"></textarea>
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+        </div>
         </div>
 
         <br />
-        <a asp-action="Edit" asp-route-id="@Model?.Id">Update</a>
+        <!-- Submit button -->
+        <button type="submit" asp-action="Edit" class="btn btn-warning">Update Appointment</button>
         <a asp-action="OnlineCheckup" class="btn btn-secondary">Back</a>
     </form>
 </div>

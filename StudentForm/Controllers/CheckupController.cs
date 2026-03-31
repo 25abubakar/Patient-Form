@@ -28,7 +28,7 @@ namespace Patient_Form.Controllers
                 using (var cmd = conn.CreateCommand()) {
                     cmd.CommandText = @"
                 SELECT p.FName, p.LstName, p.Age, p.Gender, p.DOB, p.Email, p.Phone, p.City,
-                       a.PatientType, a.VisitType, a.Disease, a.AppointmentDate, a.SlotTime, a.Message
+                       a.PatientType, a.VisitType, a.Disease, a.AppointmentDate, a.SlotTime, a.Message, a.Id AS AppointmentId, a.PatientId
                 FROM dbo.Patients p
                 INNER JOIN dbo.Appointments a ON p.Id = a.PatientId
                 ORDER BY a.AppointmentDate DESC";
@@ -49,7 +49,9 @@ namespace Patient_Form.Controllers
                                 Disease = reader["Disease"].ToString(),
                                 AppointmentDate = reader["AppointmentDate"] as DateTime?,
                                 SlotTime = reader["SlotTime"].ToString(),
-                                Message = reader["Message"].ToString()
+                                Message = reader["Message"].ToString(),
+                                AppointmentId = Convert.ToInt32(reader["AppointmentId"]),
+                                PatientId = Convert.ToInt32(reader["PatientId"])
                             });
                         }
                     }
@@ -58,6 +60,53 @@ namespace Patient_Form.Controllers
 
             ViewBag.Appointments = appointments;
             return View();
+        }
+
+        // GET: Edit Appointment
+        public IActionResult Edit(int appointmentId)
+        {
+            CheckupModel model = null;
+
+            using (var conn = _context.Database.GetDbConnection()) {
+                conn.Open();
+                using (var cmd = conn.CreateCommand()) {
+                    cmd.CommandText = @"
+                SELECT p.Id AS PatientId, p.FName, p.LstName, p.Age, p.Gender, p.DOB, p.Email, p.Phone, p.City,
+                       a.Id AS AppointmentId, a.PatientType, a.VisitType, a.Disease, a.AppointmentDate, a.SlotTime, a.Message
+                FROM dbo.Patients p
+                INNER JOIN dbo.Appointments a ON p.Id = a.PatientId
+                WHERE  a.Id = @AppointmentId";
+
+                    cmd.Parameters.Add(new SqlParameter("@AppointmentId", appointmentId));
+
+                    using var reader = cmd.ExecuteReader();
+                    if (reader.Read()) {
+                        model = new CheckupModel {
+                            PatientId = Convert.ToInt32(reader["PatientId"]),
+                            AppointmentId = Convert.ToInt32(reader["AppointmentId"]),
+                            FName = reader["FName"].ToString(),
+                            LstName = reader["LstName"].ToString(),
+                            Age = Convert.ToInt32(reader["Age"]),
+                            Gender = reader["Gender"].ToString(),
+                            DOB = reader["DOB"] as DateTime?,
+                            Email = reader["Email"].ToString(),
+                            Phone = reader["Phone"].ToString(),
+                            City = reader["City"].ToString(),
+                            PatientType = reader["PatientType"].ToString(),
+                            VisitType = reader["VisitType"].ToString(),
+                            Disease = reader["Disease"].ToString(),
+                            AppointmentDate = reader["AppointmentDate"] as DateTime?,
+                            SlotTime = reader["SlotTime"].ToString(),
+                            Message = reader["Message"].ToString()
+                        };
+                    }
+                }
+            }
+
+            if (model == null)
+                return NotFound();
+
+            return View(model);
         }
 
         [HttpPost]
@@ -109,6 +158,62 @@ namespace Patient_Form.Controllers
                 }
             }
             TempData["Success"] = "Appointment booked successfully!";
+            return RedirectToAction("OnlineCheckup");
+        }
+
+        // POST: Update Appointment
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(CheckupModel model)
+        {
+            if (!ModelState.IsValid) {
+                return View(model);
+            }
+
+            using (var conn = _context.Database.GetDbConnection()) {
+                conn.Open();
+
+                // Update Patient info
+                using (var cmd = conn.CreateCommand()) {
+                    cmd.CommandText = @"
+                        UPDATE dbo.Patients
+                        SET FName=@FName, LstName=@LstName, Age=@Age, Gender=@Gender, DOB=@DOB, Email=@Email, Phone=@Phone, City=@City
+                        WHERE Id=@PatientId";
+
+                    cmd.Parameters.Add(new SqlParameter("@FName", model.FName));
+                    cmd.Parameters.Add(new SqlParameter("@LstName", model.LstName));
+                    cmd.Parameters.Add(new SqlParameter("@Age", model.Age));
+                    cmd.Parameters.Add(new SqlParameter("@Gender", model.Gender));
+                    cmd.Parameters.Add(new SqlParameter("@DOB", (object)model.DOB ?? DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@Email", model.Email));
+                    cmd.Parameters.Add(new SqlParameter("@Phone", model.Phone));
+                    cmd.Parameters.Add(new SqlParameter("@City", model.City));
+                    cmd.Parameters.Add(new SqlParameter("@PatientId", model.PatientId));
+
+                    cmd.ExecuteNonQuery();
+                }
+
+                // Update Appointment info
+                using (var cmd = conn.CreateCommand()) {
+                    cmd.CommandText = @"
+                        UPDATE dbo.Appointments
+                        SET PatientType=@PatientType, VisitType=@VisitType, Disease=@Disease,
+                            AppointmentDate=@AppointmentDate, SlotTime=@SlotTime, Message=@Message
+                        WHERE Id=@AppointmentId";
+
+                    cmd.Parameters.Add(new SqlParameter("@PatientType", model.PatientType));
+                    cmd.Parameters.Add(new SqlParameter("@VisitType", model.VisitType));
+                    cmd.Parameters.Add(new SqlParameter("@Disease", model.Disease));
+                    cmd.Parameters.Add(new SqlParameter("@AppointmentDate", model.AppointmentDate.Value));
+                    cmd.Parameters.Add(new SqlParameter("@SlotTime", model.SlotTime));
+                    cmd.Parameters.Add(new SqlParameter("@Message", (object)model.Message ?? DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@AppointmentId", model.AppointmentId));
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            TempData["Success"] = "Appointment updated successfully!";
             return RedirectToAction("OnlineCheckup");
         }
     }

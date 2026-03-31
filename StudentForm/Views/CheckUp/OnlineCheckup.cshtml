@@ -150,14 +150,8 @@
     </form>
     </div>
 </div>
-        @* <button type="submit" class="btn btn-success">
-             Update Appointment
-        </button>
-
-        <a asp-action="OnlineCheckup" class="btn btn-secondary">
-            Back
-        </a>
-           <hr/> *@
+      
+           <hr/>
 
         <h4>Booked Appointments</h4>
         <div class="card shadow-sm mb-5">
@@ -166,6 +160,7 @@
     <table class="table table-bordered">
         <thead class="table-dark">
             <tr>
+                <th>Appointment ID</th>
                 <th>FName</th>
                 <th>LstName</th>
                 <th>Age</th>
@@ -186,6 +181,7 @@
             @foreach (var CheckUpModel in ViewBag.Appointments)
             {
                 <tr>
+                    <td>@CheckUpModel.AppointmentId</td>
                     <td>@CheckUpModel.FName</td>
                     <td>@CheckUpModel.LstName</td>
                     <td>@CheckUpModel.Age</td>
@@ -199,9 +195,9 @@
                     <td>@CheckUpModel.Disease</td>
                     <td>@CheckUpModel.AppointmentDate.ToShortDateString()</td>
                     <td>@CheckUpModel.SlotTime</td>
-                    <td><a asp-action="Edit"asp-route-patientId="@CheckUpModel.PatientId"
-                        asp-route-appointmentId="@CheckUpModel.AppointmentId"
-                           class="btn btn-warning btn-sm">Update</a>
+                            <td>
+                                <a asp-action="Edit" asp-route-appointmentId="@CheckUpModel.AppointmentId"
+                           class="btn btn-warning btn-sm">Update</a></td>
                     @* <td><a asp-action="Delete"asp-route-patientId="@CheckUpModel.PatientId"
                         asp-route-appointmentId="@CheckUpModel.AppointmentId"
                            class="btn btn-warning btn-sm">Delete</a>

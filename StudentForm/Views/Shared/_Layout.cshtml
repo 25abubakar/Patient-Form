@@ -25,6 +25,32 @@
             padding: 10px 0;
             border-top: 1px solid #dee2e6;
         }
+        .btn-back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid black;
+    background-color: transparent;
+    color: black;
+    text-align: center;
+    line-height: 36px;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 1000;
+    transition: background 0.3s, color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.btn-back-to-top:hover {
+    background-color: grey;
+    color: white;
+}
     </style>
 </head>
 <body>
@@ -54,20 +80,26 @@
     <main class="container mt-3 mb-3">
         @RenderBody()
     </main>
-
+    <a asp-action="OnlineCheckup" id="backToTop" class="btn-back-to-top">
+    ↑
+</a>
 <footer>
     <div class="mt-2">
         &copy; @DateTime.Now.Year Patient Form. All rights reserved.
-
         <a href="mailto:muhammadabubakarkhan1234@gmail.com" target="_blank" class="me-3">
             <img src="~/images/mail.jpg" alt="Gmail" style="width:24px; height:24px; vertical-align:middle;">
         </a>
         <a href="https://github.com/25abubakar/Patient-Form" target="_blank">
             <img src="~/images/git.webp" alt="GitHub" style="width:24px; height:24px; vertical-align:middle;">
-        </a>
+        </a> 
     </div>
 </footer>
-
+<script>
+document.getElementById("backToTop").addEventListener("click", function(e){
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+</script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
