@@ -1,0 +1,64 @@
+﻿@model Patient_Form.Models.CheckupModel
+@{
+    ViewData["Title"] = "Delete Record";
+}
+
+<div class="container mt-4">
+    <h2 class="text-danger">Delete Appointment</h2>
+
+    <h5>Are you sure you want to delete this record?</h5>
+    <hr />
+
+    <dl class="row">
+        <dt class="col-sm-3">Patient Name</dt>
+        <dd class="col-sm-9">@Model.FName @Model.LstName</dd>
+
+        <dt class="col-sm-3">Age</dt>
+        <dd class="col-sm-9">@Model.Age</dd>
+
+        <dt class="col-sm-3">Gender</dt>
+        <dd class="col-sm-9">@Model.Gender</dd>
+
+        <dt class="col-sm-3">Date of Birth</dt>
+        <dd class="col-sm-9">@Model.DOB?.ToShortDateString()</dd>
+
+        <dt class="col-sm-3">Email</dt>
+        <dd class="col-sm-9">@Model.Email</dd>
+
+        <dt class="col-sm-3">Phone</dt>
+        <dd class="col-sm-9">@Model.Phone</dd>
+
+        <dt class="col-sm-3">City</dt>
+        <dd class="col-sm-9">@Model.City</dd>
+
+        <dt class="col-sm-3">Patient Type</dt>
+        <dd class="col-sm-9">@Model.PatientType</dd>
+
+        <dt class="col-sm-3">Visit Type</dt>
+        <dd class="col-sm-9">@Model.VisitType</dd>
+
+        <dt class="col-sm-3">Disease</dt>
+        <dd class="col-sm-9">@Model.Disease</dd>
+
+        <dt class="col-sm-3">Appointment Date</dt>
+        <dd class="col-sm-9">@Model.AppointmentDate?.ToShortDateString()</dd>
+
+        <dt class="col-sm-3">Slot Time</dt>
+        <dd class="col-sm-9">@Model.SlotTime</dd>
+
+        <dt class="col-sm-3">Message</dt>
+        <dd class="col-sm-9">@Model.Message</dd>
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" name="_method" value="DELETE" />
+
+        <input type="hidden" asp-for="AppointmentId" />
+        <input type="hidden" asp-for="PatientId" />
+
+        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+        <a asp-action="OnlineCheckup" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

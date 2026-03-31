@@ -36,9 +36,9 @@
                 <label asp-for="Gender">Gender</label>
                 <select asp-for="Gender" class="form-control">
                     <option value="">-- Select Gender --</option>
-                    <option value="Male" selected="@Model.Gender == " Male"">Male</option>
-                    <option value="Female" selected="@Model.Gender == " Female"">Female</option>
-                    <option value="Other" selected="@Model.Gender == " Other"">Other</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
                 </select>
                 <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
@@ -86,6 +86,7 @@
                     <option value="New">New Patient</option>
                     <option value="FollowUp">Follow-Up</option>
                 </select>
+            </div>
 
             <div class="col-md-6">
                 <label asp-for="Disease">Disease</label>
@@ -110,7 +111,6 @@
                 <textarea asp-for="Message" class="form-control"></textarea>
                 <span asp-validation-for="Message" class="text-danger"></span>
             </div>
-        </div>
         </div>
 
         <br />
