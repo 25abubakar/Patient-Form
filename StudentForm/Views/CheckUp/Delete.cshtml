@@ -8,10 +8,8 @@
     <h5>Are you sure you want to delete this record?</h5>
     <hr />
 
-    <!-- FORM MUST POST TO DELETE -->
-    <form asp-action="Delete" method="post">
+    <form asp-action="Edit" method="post">
         @Html.AntiForgeryToken()
-
         <input type="hidden" asp-for="PatientId" />
         <input type="hidden" asp-for="AppointmentId" />
 
@@ -58,8 +56,7 @@
             <dt class="col-sm-3">Message</dt>
             <dd class="col-sm-9">@Model.Message</dd>
         </dl>
-
-        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+        <button type="submit" asp-action="Delete" class="btn btn-danger">Delete Appointment</button>
         <a asp-action="OnlineCheckup" class="btn btn-secondary">Cancel</a>
     </form>
 </div>

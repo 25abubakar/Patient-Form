@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Patient_Form.Models
 {
-        public class CheckupModel
-        {
+    public class CheckupModel
+    {
         public int PatientId { get; set; }
         public int AppointmentId { get; set; }
         public int Id { get; set; }
@@ -26,7 +26,7 @@ namespace Patient_Form.Models
 
         [Required(ErrorMessage = "Date Of Birth required")]
         [DataType(DataType.Date)]
-        public DateTime? DOB { get; set; }  // Nullable
+        public DateTime? DOB { get; set; }
 
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Enter valid email")]
