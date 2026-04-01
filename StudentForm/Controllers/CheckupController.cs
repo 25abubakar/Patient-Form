@@ -59,6 +59,47 @@ namespace Patient_Form.Controllers
             ViewBag.Appointments = appointments;
             return View();
         }
+        //Delete Get Method
+
+        [HttpGet]
+        public IActionResult Delete(int appointmentId)
+        {
+            var model = new CheckupModel();
+
+            using var conn = _context.Database.GetDbConnection();
+            conn.Open();
+
+            using var cmd = conn.CreateCommand();
+            cmd.CommandText = @"
+        SELECT p.*, a.*
+        FROM Patients p
+        JOIN Appointments a ON p.Id = a.PatientId
+        WHERE a.Id = @AppointmentId";
+
+            cmd.Parameters.Add(new SqlParameter("@AppointmentId", appointmentId));
+
+            using var reader = cmd.ExecuteReader();
+            if (reader.Read()) {
+                model.PatientId = Convert.ToInt32(reader["PatientId"]);
+                model.AppointmentId = Convert.ToInt32(reader["Id"]);
+                model.FName = reader["FName"].ToString();
+                model.LstName = reader["LstName"].ToString();
+                model.Age = Convert.ToInt32(reader["Age"]);
+                model.Gender = reader["Gender"].ToString();
+                model.DOB = reader["DOB"] as DateTime?;
+                model.Email = reader["Email"].ToString();
+                model.Phone = reader["Phone"].ToString();
+                model.City = reader["City"].ToString();
+                model.PatientType = reader["PatientType"].ToString();
+                model.VisitType = reader["VisitType"].ToString();
+                model.Disease = reader["Disease"].ToString();
+                model.AppointmentDate=reader["AppointmentDate"] as DateTime?;
+                model.SlotTime = reader["SlotTime"].ToString();
+                model.Message = reader["Message"].ToString();
+            }
+
+            return View(model);
+        }
 
         // CREATE APPOINTMENT
         [HttpPost]
@@ -207,19 +248,38 @@ namespace Patient_Form.Controllers
         }
 
         // DELETE Appointment
-        [HttpDelete]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Delete(CheckupModel model)
         {
             using var conn = _context.Database.GetDbConnection();
             conn.Open();
 
-            using (var cmd = conn.CreateCommand()) {
-                cmd.CommandText = "DELETE FROM Appointments WHERE Id=@AppointmentId";
-                cmd.Parameters.Add(new SqlParameter("@AppointmentId", model.AppointmentId));
-                cmd.ExecuteNonQuery();
+            using var transaction = conn.BeginTransaction();
+
+            try {
+                using (var cmd = conn.CreateCommand()) {
+                    cmd.Transaction = transaction;
+                    cmd.CommandText = "DELETE FROM Appointments WHERE Id=@AppointmentId";
+                    cmd.Parameters.Add(new SqlParameter("@AppointmentId", model.AppointmentId));
+                    cmd.ExecuteNonQuery();
+                }
+                using (var cmd = conn.CreateCommand()) {
+                    cmd.Transaction = transaction;
+                    cmd.CommandText = "DELETE FROM Patients WHERE Id=@PatientId";
+                    cmd.Parameters.Add(new SqlParameter("@PatientId", model.PatientId));
+                    cmd.ExecuteNonQuery();
+                }
+
+                transaction.Commit();
+
+                TempData["Success"] = "Record deleted successfully!";
             }
-            TempData["Success"] = "Record deleted successfully!";
+            catch (Exception) {
+                transaction.Rollback();
+                TempData["Error"] = "Delete failed!";
+            }
+
             return RedirectToAction("OnlineCheckup");
         }
     }

@@ -199,9 +199,12 @@
                                    class="btn btn-warning btn-sm">Update</a>
                             </td>
                             <td>
-                                <a asp-action="Delete" asp-route-patientId="@CheckUpModel.AppointmentId"
-                                class="btn btn-danger btn-sm">Delete</a>
-                    </td>
+                                <a asp-action="Delete"
+                                       asp-route-appointmentId="@CheckUpModel.AppointmentId"
+                                       class="btn btn-danger btn-sm">
+                                    Delete
+                                </a>
+                            </td>
                         </tr>
                     }
                 </tbody>
