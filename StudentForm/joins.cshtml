@@ -1,0 +1,86 @@
+﻿@* DELETE FROM Patients
+WHERE Id IN (23);
+
+Select * From Patients
+where id = 21;
+
+--> Having
+
+Select Disease From Appointments
+Where VisitType In
+(Select VisitType, Count(*) From Appointments Group By VisitType
+having count(*)<3); SELECT Disease
+                FROM Appointments
+                WHERE VisitType IN
+                (
+                SELECT VisitType
+                FROM Appointments
+                GROUP BY VisitType
+                HAVING COUNT(*) < 7
+              );
+   
+              Select VisitType,PatientType, Count(*) From Appointments Group By VisitType,PatientType
+              having count(*)<5
+
+--> GroupBy
+
+Select VisitType from Appointments Group By VisitType;
+
+Select PatientType, Count(*) From Appointments Group By PatientType
+having count(*)<5
+
+Select PatientType, Count(*) From Appointments Group By PatientType;
+Select PatientType from Appointments Group By PatientType;
+
+Select AppointmentDate, Count(*) From Appointments Group By AppointmentDate;
+Select AppointmentDate from Appointments Group By AppointmentDate;
+
+Select SlotTime, Count(*) From Appointments Group By SlotTime;
+Select SlotTime from Appointments Group By SlotTime;
+
+
+--> Joins
+
+Select VisitType From Appointments where PatientType = 'Inpatient'
+
+Select Id,FName,LstName From Patients where Age = '60';
+
+--> Inner Join
+
+SELECT *
+FROM Patients p
+INNER JOIN Appointments a
+ON p.Id = a.PatientID;
+
+--> Natural Join
+
+Select FName, LstName, Disease From Patients, Appointments where Patients.Id = Appointments.PatientId
+
+-- SELECT Name, Message
+-- FROM Patients
+-- NATURAL JOIN Appointments;
+
+-- Self Join
+
+Select T1.Phone From Patients as  T1, Patients as T2
+where T1.Phone = T2.Phone                                       -- mean disease same ha but message not null ha
+And
+T1.FName != T2.FName
+
+--> Equi(=) Join
+
+Select LstName From Patients,Appointments where Patients.Id = Appointments.PatientId
+And Patients.Id = Appointments.PatientId           -- mean tha in left table address here and other location so than name
+--   of the person whose location and address was same
+                                                   
+--> Left Outer Join
+
+Select Fname,LstName, Disease, VisitType from Patients left outer join Appointments on (Patients.Id = Appointments.PatientId)
+
+--> Right Outer Join
+
+Select Fname,LstName, Disease, VisitType from Patients Right outer join Appointments on (Patients.Id = Appointments.PatientId)
+
+--> Full Outer Join
+
+Select Fname,LstName, Disease, VisitType from Patients Full outer join Appointments on (Patients.Id = Appointments.PatientId) *@

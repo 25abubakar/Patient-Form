@@ -93,7 +93,7 @@ namespace Patient_Form.Controllers
                 model.PatientType = reader["PatientType"].ToString();
                 model.VisitType = reader["VisitType"].ToString();
                 model.Disease = reader["Disease"].ToString();
-                model.AppointmentDate = reader["AppointmentDate"] as DateTime?;
+                model.AppointmentDate=reader["AppointmentDate"] as DateTime?;
                 model.SlotTime = reader["SlotTime"].ToString();
                 model.Message = reader["Message"].ToString();
             }

@@ -54,6 +54,7 @@ namespace Patient_Form.Models
         public DateTime? AppointmentDate { get; set; }
 
         [Required(ErrorMessage = "Please select time slot")]
+        [SlotAvailable]   // ✅ Add this line
         public string SlotTime { get; set; }
 
         [StringLength(200)]
